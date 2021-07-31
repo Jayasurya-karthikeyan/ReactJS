@@ -76,7 +76,7 @@ export const DISHES = [
         id: 2,
         rating: 3,
         comment: "Eat it, just eat it!",
-        author: "Michael Jaikishan",
+        author: "Michael Rayappan",
         date: "2015-02-13T17:57:28.556094Z",
       },
       {
