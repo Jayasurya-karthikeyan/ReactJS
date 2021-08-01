@@ -1,32 +1,12 @@
 import React, { Component } from "react";
-import { Navbar, NavbarBrand } from "reactstrap";
 import "./App.css";
-import Menu from "./Components/MenuComponent";
-import { DISHES } from "./shared/dishes";
+import Main from "./Components/MainComponent";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      dishes: DISHES,
-      selectedDish: null,
-    };
-  }
-  
-  onDishSelect(dish) {
-    this.setState({ selectedDish: dish });
-  }
-
   render() {
     return (
       <div>
-        <Navbar dark color="success">
-          <div className="container">
-            <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-          </div>
-        </Navbar>
-        <Menu dishes={this.state.dishes} />
+        <Main />
       </div>
     );
   }
