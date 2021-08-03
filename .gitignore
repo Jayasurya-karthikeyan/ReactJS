@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#mine
+/src/Components/Check.js
+/src/Components/Check1.js
