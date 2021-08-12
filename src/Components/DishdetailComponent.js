@@ -19,16 +19,16 @@ import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 
 const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !val || (val.length <= len);
-const minLength = (len) => (val) => !val || (val.length >= len);
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => !val || val.length >= len;
 
-class CommentForm extends Component{
-  constructor(props){
+class CommentForm extends Component {
+  constructor(props) {
     super(props);
     this.toggleModal = this.toggleModal.bind(this);
-    this.state={
+    this.state = {
       isModalOpen: false,
-    }
+    };
   }
   toggleModal() {
     this.setState({
@@ -36,21 +36,22 @@ class CommentForm extends Component{
     });
   }
   handleSubmit(values) {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+    this.toggleModal();
+    this.props.addComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.comments
+      );
   }
-  render(){
-    return(
+  render() {
+    return (
       <div>
-          <Button
-            outline
-            className="btn btn-primary"
-            onClick={this.toggleModal}
-          >
-            <span className="fa fa-pencil fa-lg"></span> Submit Comment
-          </Button>
+        <Button outline className="btn btn-primary" onClick={this.toggleModal}>
+          <span className="fa fa-pencil fa-lg"></span> Submit Comment
+        </Button>
 
-          <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}> Submit Comment</ModalHeader>
           <ModalBody>
             <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
@@ -68,7 +69,7 @@ class CommentForm extends Component{
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
-                    <option>5</option> 
+                    <option>5</option>
                   </Control.select>
                 </Col>
               </Row>
@@ -146,38 +147,34 @@ function RenderDish({ dish }) {
   );
 }
 
-
-function RenderComments({ comments }) {  
-  
+function RenderComments({ comments, addComment, dishId }) {
   if (comments != null) {
     const commentugal = comments.map((commentoda) => {
-      return(
-      <div key={commentoda.id}>
-        <div>{commentoda.comment}</div>
-        <div>
-          &nbsp; --{commentoda.author}, &nbsp;
-          {new Intl.DateTimeFormat("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "2-digit",
-          }).format(new Date(Date.parse(commentoda.date)))}
+      return (
+        <div key={commentoda.id}>
+          <div>{commentoda.comment}</div>
+          <div>
+            &nbsp; --{commentoda.author}, &nbsp;
+            {new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "2-digit",
+            }).format(new Date(Date.parse(commentoda.date)))}
+          </div>
         </div>
-      </div>
       );
     });
     return (
       <div className="col-12 col-md-5 m-1">
         <h4>Comments</h4>
         <ul className="list-unstyled">{commentugal}</ul>
-        <CommentForm />
+        <CommentForm dishId={dishId} addComment={addComment} />
       </div>
     );
   } else {
     return <div></div>;
   }
-
 }
-
 
 const DishDetail = (props) => {
   if (props.dish != null) {
@@ -197,7 +194,11 @@ const DishDetail = (props) => {
         </div>
         <div className="row">
           <RenderDish dish={props.dish} />
-          <RenderComments comments={props.comments} />
+          <RenderComments
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     );
