@@ -1,14 +1,34 @@
-const commentugal = comments.map((commentoda) => {
-    return(
-      <li key={commentoda.id}>
-        <p>{commentoda.comment}</p>
-        <p>-- {commentoda.author},
-                  {new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-  }).format(new Date(Date.parse(commentoda.date)))}
-</p>
-      </li>
-    );
-  });
+import * as ActionTypes from './ActionTypes';
+
+export const Promotions = (
+  state = {
+    isLoading: true,
+    errMess: null,
+    dishes: [],
+  },
+  action
+) => {
+  switch (action.type) {
+    case ActionTypes.ADD_PROMOS:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: null,
+        promos: action.payload,
+      };
+
+    case ActionTypes.PROMOS_LOADING:
+      return { ...state, isLoading: true, errMess: null, promos: [] };
+
+    case ActionTypes.PROMOS_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        errMess: action.payload,
+        promos: [],
+      };
+
+    default:
+      return state;
+  }
+};
