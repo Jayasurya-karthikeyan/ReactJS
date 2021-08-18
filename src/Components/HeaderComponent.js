@@ -49,7 +49,7 @@ class Header extends Component {
       " Username: " +
         this.username.value +
         " \n Password: " +
-        this.username.value +
+        this.password.value +
         " \n Remeber me: " +
         this.remember.checked
     );

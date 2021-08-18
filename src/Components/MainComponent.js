@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import {
   postComment,
+  postFeedback,
   fetchDishes,
   fetchComments,
   fetchPromos,
@@ -30,6 +31,26 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   postComment: (dishId, rating, author, comment) =>
     dispatch(postComment(dishId, rating, author, comment)),
+  postFeedback: (
+    firstName,
+    lastName,
+    telnum,
+    email,
+    agree,
+    contactType,
+    message
+  ) =>
+    dispatch(
+      postFeedback(
+        firstName,
+        lastName,
+        telnum,
+        email,
+        agree,
+        contactType,
+        message
+      )
+    ),
   fetchDishes: () => {
     dispatch(fetchDishes());
   },
@@ -120,15 +141,22 @@ class Main extends Component {
                 exact
                 path="/contactus"
                 component={() => (
-                  <Contact resetFeedbackForm={this.props.resetFeedbackForm} />
+                  <Contact
+                    resetFeedbackForm={this.props.resetFeedbackForm}
+                    postFeedback={this.props.postFeedback}
+                  />
                 )}
               />
               <Route
                 exact
                 path="/aboutus"
-                component={() => <About leaders={this.props.leaders.leaders}
-                isLoading={this.props.leaders.isLoading}
-                errMess={this.props.leaders.errMess} />}
+                component={() => (
+                  <About
+                    leaders={this.props.leaders.leaders}
+                    isLoading={this.props.leaders.isLoading}
+                    errMess={this.props.leaders.errMess}
+                  />
+                )}
               />
               <Redirect to="home" />
             </Switch>
